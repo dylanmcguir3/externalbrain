@@ -1,0 +1,29 @@
+/* styles.css */
+.node {
+  width: 200px;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: move;
+}
+
+.assumption-node {
+  background-color: #e7d469; /* Yellow */
+}
+
+.research-node {
+  background-color: #87ceeb; /* Sky Blue */
+}
+
+.conversation-node {
+  background-color: #98fb98; /* Pale Green */
+}
+
+.node-container {
+  display: flex;
+  gap: 10px;
+  background-color: #f0f0f0;
+  width: 1000;
+  height: 1000px;
+}
