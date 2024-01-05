@@ -35,8 +35,9 @@ const ResearchNode: React.FC<ResearchNodeProps> = ({ id }) => {
     item: { id },
   });
 
-  const style = {
-    transform: `translate(${position.x}px, ${position.y}px)`
+  const style : {transform: string, position : 'absolute'} = {
+    transform: `translate(${position.x}px, ${position.y}px)`,
+    position: 'absolute',
   };
 
   return (

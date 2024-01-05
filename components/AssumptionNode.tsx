@@ -1,5 +1,6 @@
 import { useDrag, useDragLayer } from 'react-dnd';
 import { useState, useEffect } from 'react';
+import { Position } from 'postcss';
 
 interface AssumptionNodeProps {
   id: string;
@@ -25,6 +26,7 @@ const AssumptionNode: React.FC<AssumptionNodeProps> = ({ id }) => {
         });
       }
     } else {
+      console.log(initialPosition, position)
       setInitialPosition(position);
     }
   }, [isDragging, initialSourceClientOffset, sourceClientOffset]);
@@ -34,8 +36,9 @@ const AssumptionNode: React.FC<AssumptionNodeProps> = ({ id }) => {
     item: { id },
   });
 
-  const style = {
-    transform: `translate(${position.x}px, ${position.y}px)`
+  const style : {transform: string, position : 'absolute'} = {
+    transform: `translate(${position.x}px, ${position.y}px)`,
+    position: 'absolute',
   };
 
   return (

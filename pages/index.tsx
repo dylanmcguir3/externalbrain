@@ -1,7 +1,3 @@
-import MaterialList from "../components/list" 
-import Blob from "../components/blob"
-import { Button } from "@mui/material"
-
 export default function Home() {
   return (
     <div>

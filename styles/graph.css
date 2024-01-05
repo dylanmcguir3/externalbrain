@@ -21,9 +21,8 @@
 }
 
 .node-container {
-  display: flex;
   gap: 10px;
   background-color: #f0f0f0;
-  width: 1000;
+  width: 2000px;
   height: 1000px;
 }
