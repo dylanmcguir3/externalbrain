@@ -34,9 +34,10 @@ const NodeCreationButton: React.FC<NodeCreationButtonProps> = ({onCreateNode}) =
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={() => handleMenuItemClick('Assumption')}>Assumption Node</MenuItem>
-        <MenuItem onClick={() => handleMenuItemClick('Conversation')}>Conversation Node</MenuItem>
-        <MenuItem onClick={() => handleMenuItemClick('Research')}>Research Node</MenuItem>
+        <MenuItem className="assumption-node" onClick={() => handleMenuItemClick('Assumption')}>Orange</MenuItem>
+        <MenuItem className="conversation-node" onClick={() => handleMenuItemClick('Conversation')}>Pink</MenuItem>
+        <MenuItem className="research-node" onClick={() => handleMenuItemClick('Research')}>Blue</MenuItem>
+        <MenuItem onClick={() => handleMenuItemClick('')}>White</MenuItem>
       </Menu>
     </div>
   );

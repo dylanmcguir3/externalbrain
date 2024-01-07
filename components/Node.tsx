@@ -1,15 +1,30 @@
 import { useDrag, useDragLayer } from 'react-dnd';
 import { useState, useEffect } from 'react';
 
-interface AssumptionNodeProps {
+interface NodeProps {
   id: string;
   initial_x: number;
   initial_y: number;
+  type: string;
 }
 
-const AssumptionNode: React.FC<AssumptionNodeProps> = ({ id, initial_x, initial_y }) => {
+const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type }) => {
   const [position, setPosition] = useState({ x: initial_x, y: initial_y});
   const [initialPosition, setInitialPosition] = useState({ x: initial_x, y: initial_y });
+  const [isEditing, setIsEditing] = useState(false);
+  const [nodeText, setNodeText] = useState('Node');
+
+  const handleDoubleClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNodeText(event.target.value);
+  };
 
   const { isDragging, initialSourceClientOffset, sourceClientOffset, item } = useDragLayer(monitor => ({
     isDragging: monitor.isDragging(),
@@ -34,7 +49,7 @@ const AssumptionNode: React.FC<AssumptionNodeProps> = ({ id, initial_x, initial_
   }, [isDragging, initialSourceClientOffset, sourceClientOffset]);
 
   const [, ref] = useDrag({
-    type: 'ASSUMPTION',
+    type: 'ASSUMPTION', // vestigial
     item: { id },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
@@ -63,16 +78,26 @@ const AssumptionNode: React.FC<AssumptionNodeProps> = ({ id, initial_x, initial_
       }
     },
   });
+
   const style : {transform: string, position : 'absolute'} = {
     transform: `translate(${position.x}px, ${position.y}px)`,
     position: 'absolute',
   };
 
+  
   return (
-    <div ref={ref} className="node assumption-node" style={style}>
-      Node
+    <div onDoubleClick={handleDoubleClick}>
+    {isEditing ? (
+    <div ref={ref} className={`node ${type}-node`} style={style}>
+      <input className="input" type="text" value={nodeText} onChange={handleChange} onBlur={handleBlur} autoFocus />
+    </div>
+    ) : (
+      <div ref={ref} className={`node ${type}-node`} style={style}>
+        {nodeText}
+      </div>
+    )}
     </div>
   );
 };
 
-export default AssumptionNode;
+export default Node;

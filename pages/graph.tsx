@@ -1,8 +1,6 @@
 // pages/graph.js
 import React, { useEffect, useState } from 'react';
-import AssumptionNode from '../components/AssumptionNode';
-import ResearchNode from '../components/ResearchNode';
-import ConversationNode from '../components/ConversationNode';
+import Node from '../components/Node';
 import { useDrop } from 'react-dnd';
 import NodeCreationButton from '../components/NodeCreationButton';
 import sqlite3 from 'sqlite3';
@@ -66,13 +64,13 @@ const GraphPage = () => {
         {nodes.map(node => {
           switch (node.type) {
             case 'ASSUMPTION':
-              return <AssumptionNode key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} />;
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"assumption"}/>;
             case 'CONVERSATION':
-              return <ConversationNode key={node.id} id={node.id} />;
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"conversation"} />;
             case 'RESEARCH':
-              return <ResearchNode key={node.id} id={node.id} />;
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"research"}/>;
             default:
-              return null;
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={""}/>;
           }
         })}
       </div>

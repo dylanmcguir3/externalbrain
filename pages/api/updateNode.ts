@@ -4,7 +4,6 @@ import { open } from 'sqlite';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    console.log(req.body);
     const { id, type, x, y } = req.body;
     const db = await open({
       filename: './mydatabase.db',
