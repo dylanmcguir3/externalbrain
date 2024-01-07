@@ -15,7 +15,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         id TEXT PRIMARY KEY,
         type TEXT,
         x INTEGER,
-        y INTEGER
+        y INTEGER,
+        text TEXT
       )
     `);
 

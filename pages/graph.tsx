@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Node from '../components/Node';
 import { useDrop } from 'react-dnd';
 import NodeCreationButton from '../components/NodeCreationButton';
-import sqlite3 from 'sqlite3';
-import { open } from 'sqlite';
 
 const GraphPage = () => {
   const [, drop] = useDrop({
@@ -23,6 +21,7 @@ const GraphPage = () => {
         ...node,
         x: node.x || 0,
         y: node.y || 0,
+        nodeText : node.text || "Node",
       }));
       setNodes(formattedNodes);
     };
@@ -35,6 +34,7 @@ const GraphPage = () => {
     type: string;
     x: number;
     y: number;
+    text : string;
   }
   
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -45,6 +45,7 @@ const GraphPage = () => {
       type: nodeType.toUpperCase(),
       x : 0,
       y : 0,
+      text : "Node",
     };
     fetch('/api/updateNode', {
       method: 'POST',
@@ -64,13 +65,13 @@ const GraphPage = () => {
         {nodes.map(node => {
           switch (node.type) {
             case 'ASSUMPTION':
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"assumption"}/>;
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"assumption"} text={node.text}/>;
             case 'CONVERSATION':
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"conversation"} />;
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"conversation"} text={node.text}/>;
             case 'RESEARCH':
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"research"}/>;
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"research"} text={node.text}/>;
             default:
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={""}/>;
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={""} text={node.text}/>;
           }
         })}
       </div>

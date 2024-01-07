@@ -6,13 +6,14 @@ interface NodeProps {
   initial_x: number;
   initial_y: number;
   type: string;
+  text: string;
 }
 
-const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type }) => {
+const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type, text }) => {
   const [position, setPosition] = useState({ x: initial_x, y: initial_y});
   const [initialPosition, setInitialPosition] = useState({ x: initial_x, y: initial_y });
   const [isEditing, setIsEditing] = useState(false);
-  const [nodeText, setNodeText] = useState('Node');
+  const [nodeText, setNodeText] = useState(text);
 
   const handleDoubleClick = () => {
     setIsEditing(true);
@@ -20,7 +21,25 @@ const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type }) => {
 
   const handleBlur = () => {
     setIsEditing(false);
+    pushChange();
   };
+
+  const pushChange = () => {
+    const newNode = {
+      id: id,
+      type: type,
+      x: position.x,
+      y: position.y,
+      text : nodeText,
+    };
+    fetch('/api/updateNode', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newNode),
+    });
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNodeText(event.target.value);
@@ -46,11 +65,11 @@ const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type }) => {
     } else {
       setInitialPosition(position);
     }
-  }, [isDragging, initialSourceClientOffset, sourceClientOffset]);
+  }, [isDragging, initialSourceClientOffset, sourceClientOffset, isEditing]);
 
   const [, ref] = useDrag({
     type: 'ASSUMPTION', // vestigial
-    item: { id },
+    item: { id , type},
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
   
@@ -60,21 +79,8 @@ const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type }) => {
           y: initialPosition.y + (sourceClientOffset.y - initialSourceClientOffset.y),
         };
   
-        const newNode = {
-          id: id,
-          type: 'ASSUMPTION',
-          x: newPosition.x,
-          y: newPosition.y,
-        };
-  
-        // Update the node's position in the database
-        fetch('/api/updateNode', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newNode),
-        });
+        pushChange();
+
       }
     },
   });
