@@ -11,10 +11,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     await db.exec(`
-      CREATE TABLE IF NOT EXISTS sources (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        email TEXT
+      CREATE TABLE IF NOT EXISTS nodes (
+        id TEXT PRIMARY KEY,
+        type TEXT,
+        x INTEGER,
+        y INTEGER
       )
     `);
 
@@ -22,6 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({ message: 'Database initialized successfully.' });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: 'An error occurred while initializing the database.' });
   }
 };
