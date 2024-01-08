@@ -14,7 +14,7 @@ const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type, text }) => 
   const [initialPosition, setInitialPosition] = useState({ x: initial_x, y: initial_y });
   const [isEditing, setIsEditing] = useState(false);
   const [nodeText, setNodeText] = useState(text);
-  
+
   const handleDoubleClick = () => {
     setIsEditing(true);
   };
@@ -24,23 +24,26 @@ const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type, text }) => 
     pushChange();
   };
 
-  const pushChange = () => {
-    const newNode = {
-      id: id,
-      type: type,
-      x: position.x,
-      y: position.y,
-      text : nodeText,
-    };
-    fetch('/api/updateNode', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newNode),
-    });
-  }
+const pushChange = () => {
+  const newNode = {
+    id: id,
+    type: type,
+    x: position.x,
+    y: position.y,
+    text : nodeText,
+  };
+  fetch('/api/updateNode', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newNode),
+  });
 
+  const event = new CustomEvent('nodeMove');
+  document.dispatchEvent(event);
+  
+}
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNodeText(event.target.value);
   };
@@ -94,11 +97,11 @@ const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type, text }) => 
   return (
     <div onDoubleClick={handleDoubleClick}>
     {isEditing ? (
-    <div ref={ref} className={`node ${type}-node`} style={style}>
+    <div id={id} ref={ref} className={`node ${type}-node`} style={style}>
       <input className="input" type="text" value={nodeText} onChange={handleChange} onBlur={handleBlur} autoFocus />
     </div>
     ) : (
-      <div ref={ref} className={`node ${type}-node`} style={style}>
+      <div id={id} ref={ref} className={`node ${type}-node`} style={style}>
         {nodeText}
       </div>
     )}

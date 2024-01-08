@@ -4,6 +4,7 @@ import Node from '../components/Node';
 import Edge from '../components/Edge'
 import { useDrop } from 'react-dnd';
 import NodeCreationButton from '../components/NodeCreationButton';
+import ClearNodesButton from '@/components/ClearNodesButton';
 
 const GraphPage = () => {
 
@@ -31,9 +32,12 @@ const GraphPage = () => {
       }));
       setNodes(formattedNodes);
       createEdge(nodes[0], nodes[1]);
-      createEdge(nodes[1], nodes[2]);
-      createEdge(nodes[2], nodes[3]);
-      console.log(edges)
+      createEdge(nodes[0], nodes[2]);
+      createEdge(nodes[0], nodes[3]);
+      createEdge(nodes[2], nodes[1]);
+      createEdge(nodes[3], nodes[4]);
+      createEdge(nodes[4], nodes[5]);
+      createEdge(nodes[5], nodes[6]);
     };
     fetchNodes();
   }, []);
@@ -73,27 +77,25 @@ const GraphPage = () => {
     setEdges(prevEdges => [...prevEdges, { source, target }]);
   };
   
-  useEffect(() => {
-    console.log(edges);
-  }, [edges]);
 
   return (
     <div id="canvas" className="graph-container">
       <h1>Retail Buyer Platform</h1>
       <NodeCreationButton onCreateNode={createNode} />
+      <ClearNodesButton />
       <div ref={drop} className="node-container">
         {nodes.map(node => {
           switch (node.type) {
             case 'ASSUMPTION':
               return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"assumption"} text={node.text}/>;
-            case 'CONVERSATION':
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"conversation"} text={node.text}/>;
-            case 'RESEARCH':
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"research"} text={node.text}/>;
-            default:
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={""} text={node.text}/>;
-          }
-        })}
+              case 'CONVERSATION':
+                return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"conversation"} text={node.text}/>;
+                case 'RESEARCH':
+                  return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"research"} text={node.text}/>;
+                  default:
+                    return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={""} text={node.text}/>;
+                  }
+                })}
         {edges.map((edge, index) => (
           <Edge key={index} source={edge.source} target={edge.target} />
         ))}
