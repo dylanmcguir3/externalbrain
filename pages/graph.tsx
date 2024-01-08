@@ -1,10 +1,16 @@
 // pages/graph.js
 import React, { useEffect, useState } from 'react';
 import Node from '../components/Node';
+import Edge from '../components/Edge'
 import { useDrop } from 'react-dnd';
 import NodeCreationButton from '../components/NodeCreationButton';
 
 const GraphPage = () => {
+
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [edges, setEdges] = useState<Edge[]>([]);
+
+
   const [, drop] = useDrop({
     accept: ['ASSUMPTION', 'RESEARCH', 'CONVERSATION'],
     drop: (item, monitor) => {
@@ -24,8 +30,11 @@ const GraphPage = () => {
         nodeText : node.text || "Node",
       }));
       setNodes(formattedNodes);
+      createEdge(nodes[0], nodes[1]);
+      createEdge(nodes[1], nodes[2]);
+      createEdge(nodes[2], nodes[3]);
+      console.log(edges)
     };
-  
     fetchNodes();
   }, []);
 
@@ -36,8 +45,11 @@ const GraphPage = () => {
     y: number;
     text : string;
   }
-  
-  const [nodes, setNodes] = useState<Node[]>([]);
+
+  interface Edge {
+    source: Node;
+    target: Node;
+  }
 
   const createNode = (nodeType: string) => {
     const newNode = {
@@ -57,8 +69,16 @@ const GraphPage = () => {
     setNodes(prevNodes => [newNode, ...prevNodes]);
   };
 
+  const createEdge = (source : Node, target : Node) => {
+    setEdges(prevEdges => [...prevEdges, { source, target }]);
+  };
+  
+  useEffect(() => {
+    console.log(edges);
+  }, [edges]);
+
   return (
-    <div className="graph-container">
+    <div id="canvas" className="graph-container">
       <h1>Retail Buyer Platform</h1>
       <NodeCreationButton onCreateNode={createNode} />
       <div ref={drop} className="node-container">
@@ -74,6 +94,9 @@ const GraphPage = () => {
               return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={""} text={node.text}/>;
           }
         })}
+        {edges.map((edge, index) => (
+          <Edge key={index} source={edge.source} target={edge.target} />
+        ))}
       </div>
     </div>
   );

@@ -24,7 +24,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json({ message: 'Database initialized successfully.' });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: 'An error occurred while initializing the database.' });
   }
 };

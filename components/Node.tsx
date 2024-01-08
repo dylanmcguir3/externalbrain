@@ -14,7 +14,7 @@ const Node: React.FC<NodeProps> = ({ id, initial_x, initial_y, type, text }) => 
   const [initialPosition, setInitialPosition] = useState({ x: initial_x, y: initial_y });
   const [isEditing, setIsEditing] = useState(false);
   const [nodeText, setNodeText] = useState(text);
-
+  
   const handleDoubleClick = () => {
     setIsEditing(true);
   };
