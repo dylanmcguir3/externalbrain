@@ -58,13 +58,20 @@ const pushChange = () => {
   useEffect(() => {
     if (isDragging && item && item.id === id) {
       if (initialSourceClientOffset && sourceClientOffset) {
-        const newPosition = {
-          x: initialPosition.x + (sourceClientOffset.x - initialSourceClientOffset.x),
-          y: initialPosition.y + (sourceClientOffset.y - initialSourceClientOffset.y),
-        };
-        setPosition(newPosition);
-
-        }
+        const containerWidth = 800; // replace with actual container width
+        const containerHeight = 600; // replace with actual container height
+        const nodeWidth = 100; // replace with actual node width
+        const nodeHeight = 100; // replace with actual node height
+  
+        let newX = initialPosition.x + (sourceClientOffset.x - initialSourceClientOffset.x);
+        let newY = initialPosition.y + (sourceClientOffset.y - initialSourceClientOffset.y);
+  
+        // Ensure the new position is within the bounds of the container
+        newX = Math.min(Math.max(newX, 0), containerWidth - nodeWidth);
+        newY = Math.min(Math.max(newY, 0), containerHeight - nodeHeight);
+  
+        setPosition({ x: newX, y: newY });
+      }
     } else {
       setInitialPosition(position);
     }
@@ -77,11 +84,6 @@ const pushChange = () => {
       const dropResult = monitor.getDropResult();
   
       if (item && monitor.didDrop() && sourceClientOffset && initialSourceClientOffset) {
-        const newPosition = {
-          x: initialPosition.x + (sourceClientOffset.x - initialSourceClientOffset.x),
-          y: initialPosition.y + (sourceClientOffset.y - initialSourceClientOffset.y),
-        };
-  
         pushChange();
 
       }

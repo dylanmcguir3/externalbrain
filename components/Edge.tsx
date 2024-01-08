@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 
 interface Node {
   id: string;
@@ -19,50 +19,31 @@ const Edge: React.FC<EdgeProps> = ({ source, target }) => {
   const [sourceHeight, setSourceHeight] = useState(0);
   const [targetWidth, setTargetWidth] = useState(0);
   const [targetHeight, setTargetHeight] = useState(0);
-  const [canvasStart, setCanvasStart] = useState({ x: 0, y: 142 });
-
-
+  const [graphStart, setGraphStart] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const canvas = document.getElementById('canvas');
-    if (!canvas) {
+    const graph = document.getElementById('graph');
+    if (!graph) {
       return;
     }
-    const canvasRect = canvas.getBoundingClientRect();
-    setCanvasStart({ x: canvasRect.left, y: canvasRect.top });
-    const updatePositions = () => {
-      const sourceNode = document.getElementById(source.id);
-      const targetNode = document.getElementById(target.id);
-      console.log(sourceNode);
-      if (!sourceNode || !targetNode) {
-        return;
-      }
-      
-      const sourceRect = sourceNode.getBoundingClientRect();
-      const targetRect = targetNode.getBoundingClientRect();
-      setSourcePos({ x: sourceRect.left, y: sourceRect.top - canvasStart.y });
-      setTargetPos({ x: targetRect.left, y: targetRect.top - canvasStart.y });
-      setSourceWidth(sourceRect.width);
-      setSourceHeight(sourceRect.height);
-      setTargetWidth(targetRect.width);
-      setTargetHeight(targetRect.height);
-      console.log(sourceRect, sourceRect.height);
-    };
-  
-    const observer = new MutationObserver(updatePositions);
-    observer.observe(document, { childList: true, subtree: true });
-  
-    // Listen for the custom event
-    const handleNodeMove = () => {
-      updatePositions();
-    };
-    document.addEventListener('nodeMove', handleNodeMove);
-  
-    return () => {
-      observer.disconnect();
-      document.removeEventListener('nodeMove', handleNodeMove);
-    };
-  }, [source, target]);
+    const graphRect = graph.getBoundingClientRect();
+    setGraphStart({ x: graphRect.left, y: graphRect.top });
+  }, []);
+
+  useEffect(() => {
+    const sourceRect = document.getElementById(source.id)?.getBoundingClientRect();
+    const targetRect = document.getElementById(target.id)?.getBoundingClientRect();
+    if (!sourceRect || !targetRect) {
+      return;
+    }
+    setSourcePos({ x: sourceRect.left, y: sourceRect.top});
+    setTargetPos({ x: targetRect.left, y: targetRect.top});
+    setSourceWidth(sourceRect.width);
+    setSourceHeight(sourceRect.height);
+    setTargetWidth(targetRect.width);
+    setTargetHeight(targetRect.height);
+  });
+
 
   const getCanvasDimensions = (): number[] => {
     // Add your code here
@@ -94,10 +75,10 @@ const Edge: React.FC<EdgeProps> = ({ source, target }) => {
     <svg width={width * 2} height={height} className='edge'>
       <line 
         className='edge'
-        x1={sourcePos.x + sourceWidth / 2 }
-        y1={sourcePos.y + sourceHeight / 2} 
-        x2={targetPos.x + targetWidth / 2}
-        y2={targetPos.y + targetHeight / 2}
+        x1={sourcePos.x + sourceWidth / 2 - graphStart.x}
+        y1={sourcePos.y + sourceHeight / 2 - graphStart.y} 
+        x2={targetPos.x + targetWidth / 2 - graphStart.x}
+        y2={targetPos.y + targetHeight / 2  - graphStart.y}
         stroke="black" 
         strokeWidth="2"
       />

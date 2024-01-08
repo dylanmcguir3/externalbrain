@@ -4,7 +4,7 @@ import Node from '../components/Node';
 import Edge from '../components/Edge'
 import { useDrop } from 'react-dnd';
 import NodeCreationButton from '../components/NodeCreationButton';
-import ClearNodesButton from '@/components/ClearNodesButton';
+import ClearNodesButton from '../components/ClearNodesButton';
 
 const GraphPage = () => {
 
@@ -83,7 +83,7 @@ const GraphPage = () => {
       <h1>Retail Buyer Platform</h1>
       <NodeCreationButton onCreateNode={createNode} />
       <ClearNodesButton />
-      <div ref={drop} className="node-container">
+      <div id="graph" ref={drop} className="node-container">
         {nodes.map(node => {
           switch (node.type) {
             case 'ASSUMPTION':
