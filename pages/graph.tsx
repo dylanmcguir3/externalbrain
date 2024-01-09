@@ -85,16 +85,7 @@ const GraphPage = () => {
       <ClearNodesButton />
       <div id="graph" ref={drop} className="node-container">
         {nodes.map(node => {
-          switch (node.type) {
-            case 'ORANGE':
-            return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"orange"} text={node.text}/>;
-            case 'PINK':
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"pink"} text={node.text}/>;
-            case 'BLUE':
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"blue"} text={node.text}/>;
-            default:
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"white"} text={node.text}/>;
-          }
+          return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={node.type.toLowerCase()} text={node.text}/>;
         })}
         {edges.map((edge, index) => (
           <Edge key={index} source={edge.source} target={edge.target} />
