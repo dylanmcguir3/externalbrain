@@ -13,7 +13,7 @@ const GraphPage = () => {
 
 
   const [, drop] = useDrop({
-    accept: ['ASSUMPTION', 'RESEARCH', 'CONVERSATION'],
+    accept: ['node'],
     drop: (item, monitor) => {
 
     },
@@ -31,13 +31,13 @@ const GraphPage = () => {
         nodeText : node.text || "Node",
       }));
       setNodes(formattedNodes);
-      createEdge(nodes[0], nodes[1]);
-      createEdge(nodes[0], nodes[2]);
-      createEdge(nodes[0], nodes[3]);
-      createEdge(nodes[2], nodes[1]);
-      createEdge(nodes[3], nodes[4]);
-      createEdge(nodes[4], nodes[5]);
-      createEdge(nodes[5], nodes[6]);
+      // createEdge(nodes[0], nodes[1]);
+      // createEdge(nodes[0], nodes[2]);
+      // createEdge(nodes[0], nodes[3]);
+      // createEdge(nodes[2], nodes[1]);
+      // createEdge(nodes[3], nodes[4]);
+      // createEdge(nodes[4], nodes[5]);
+      // createEdge(nodes[5], nodes[6]);
     };
     fetchNodes();
   }, []);
@@ -86,16 +86,16 @@ const GraphPage = () => {
       <div id="graph" ref={drop} className="node-container">
         {nodes.map(node => {
           switch (node.type) {
-            case 'ASSUMPTION':
-              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"assumption"} text={node.text}/>;
-              case 'CONVERSATION':
-                return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"conversation"} text={node.text}/>;
-                case 'RESEARCH':
-                  return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"research"} text={node.text}/>;
-                  default:
-                    return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={""} text={node.text}/>;
-                  }
-                })}
+            case 'ORANGE':
+            return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"orange"} text={node.text}/>;
+            case 'PINK':
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"pink"} text={node.text}/>;
+            case 'BLUE':
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"blue"} text={node.text}/>;
+            default:
+              return <Node key={node.id} id={node.id} initial_x={node.x} initial_y={node.y} type={"white"} text={node.text}/>;
+          }
+        })}
         {edges.map((edge, index) => (
           <Edge key={index} source={edge.source} target={edge.target} />
         ))}

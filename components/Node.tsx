@@ -58,10 +58,10 @@ const pushChange = () => {
   useEffect(() => {
     if (isDragging && item && item.id === id) {
       if (initialSourceClientOffset && sourceClientOffset) {
-        const containerWidth = 800; // replace with actual container width
-        const containerHeight = 600; // replace with actual container height
-        const nodeWidth = 100; // replace with actual node width
-        const nodeHeight = 100; // replace with actual node height
+        const containerWidth = 1000; // replace with actual container width
+        const containerHeight = 1000; // replace with actual container height
+        const nodeWidth = 150; // replace with actual node width
+        const nodeHeight = 75; // replace with actual node height
   
         let newX = initialPosition.x + (sourceClientOffset.x - initialSourceClientOffset.x);
         let newY = initialPosition.y + (sourceClientOffset.y - initialSourceClientOffset.y);
@@ -78,7 +78,7 @@ const pushChange = () => {
   }, [isDragging, initialSourceClientOffset, sourceClientOffset, isEditing]);
 
   const [, ref] = useDrag({
-    type: 'ASSUMPTION', // vestigial
+    type: 'node', // vestigial
     item: { id , type},
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();

@@ -22,15 +22,15 @@
 }
 
 
-.assumption-node {
+.orange-node {
   background-color: #e7d469; /* Yellow */
 }
 
-.research-node {
+.blue-node {
   background-color: #87ceeb; /* Sky Blue */
 }
 
-.conversation-node {
+.pink-node {
   background-color: #f7b8b8; /* Pale Green */
 }
 
